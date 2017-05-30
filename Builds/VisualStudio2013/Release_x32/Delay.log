@@ -1,0 +1,70 @@
+﻿Build started 30/3/2017 8:11:24 μμ.
+     1>Project "C:\Users\Dimitris\Documents\Juce Projects\Delay\Builds\VisualStudio2013\Delay.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_audio_basics.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_audio_basics\juce_audio_basics.cpp, ..\..\JuceLibraryCode\juce_audio_basics.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_audio_devices.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_audio_devices\juce_audio_devices.cpp, ..\..\JuceLibraryCode\juce_audio_devices.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_audio_formats.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_audio_formats\juce_audio_formats.cpp, ..\..\JuceLibraryCode\juce_audio_formats.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_audio_plugin_client_utils.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_audio_plugin_client\juce_audio_plugin_client_utils.cpp, ..\..\JuceLibraryCode\juce_audio_plugin_client_utils.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_audio_plugin_client_VST2.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_audio_plugin_client\juce_audio_plugin_client_VST2.cpp, ..\..\JuceLibraryCode\juce_audio_plugin_client_VST2.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_audio_processors.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_audio_processors\juce_audio_processors.cpp, ..\..\JuceLibraryCode\juce_audio_processors.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_core.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_core\juce_core.cpp, ..\..\JuceLibraryCode\juce_core.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_cryptography.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_cryptography\juce_cryptography.cpp, ..\..\JuceLibraryCode\juce_cryptography.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_data_structures.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_data_structures\juce_data_structures.cpp, ..\..\JuceLibraryCode\juce_data_structures.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_events.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_events\juce_events.cpp, ..\..\JuceLibraryCode\juce_events.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_graphics.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_graphics\juce_graphics.cpp, ..\..\JuceLibraryCode\juce_graphics.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_gui_basics.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_gui_basics\juce_gui_basics.cpp, ..\..\JuceLibraryCode\juce_gui_basics.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_gui_extra.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_gui_extra\juce_gui_extra.cpp, ..\..\JuceLibraryCode\juce_gui_extra.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_opengl.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_opengl\juce_opengl.cpp, ..\..\JuceLibraryCode\juce_opengl.cpp.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(935,5): warning MSB8027: Two or more files with the name of juce_video.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\..\..\..\..\JUCE\modules\juce_video\juce_video.cpp, ..\..\JuceLibraryCode\juce_video.cpp.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\..\JuceLibraryCode /I..\..\..\..\..\JUCE\modules /Zi /nologo /W4 /WX- /MP /Ox /Oy- /GL /D _CRT_SECURE_NO_WARNINGS /D WIN32 /D _WINDOWS /D NDEBUG /D JUCER_VS2013_78A5020=1 /D JUCE_APP_VERSION=1.0.0 /D JUCE_APP_VERSION_HEX=0x10000 /D _WINDLL /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"Release_x32\\" /Fd"Release_x32\\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\Source\DelayProcessor.cpp ..\..\JuceLibraryCode\juce_audio_basics.cpp ..\..\JuceLibraryCode\juce_audio_devices.cpp ..\..\JuceLibraryCode\juce_audio_formats.cpp ..\..\JuceLibraryCode\juce_audio_plugin_client_utils.cpp ..\..\JuceLibraryCode\juce_audio_plugin_client_VST2.cpp ..\..\JuceLibraryCode\juce_audio_processors.cpp ..\..\JuceLibraryCode\juce_core.cpp ..\..\JuceLibraryCode\juce_cryptography.cpp ..\..\JuceLibraryCode\juce_data_structures.cpp ..\..\JuceLibraryCode\juce_events.cpp ..\..\JuceLibraryCode\juce_graphics.cpp ..\..\JuceLibraryCode\juce_gui_basics.cpp ..\..\JuceLibraryCode\juce_gui_extra.cpp ..\..\JuceLibraryCode\juce_opengl.cpp ..\..\JuceLibraryCode\juce_video.cpp
+         DelayProcessor.cpp
+         juce_audio_basics.cpp
+         juce_audio_devices.cpp
+         juce_audio_formats.cpp
+         juce_audio_plugin_client_utils.cpp
+         juce_audio_plugin_client_VST2.cpp
+         juce_audio_processors.cpp
+         juce_core.cpp
+         juce_cryptography.cpp
+     1>..\..\Source\DelayProcessor.cpp(42): warning C4244: 'initializing' : conversion from 'int' to 'const float', possible loss of data
+     1>..\..\Source\DelayProcessor.cpp(43): warning C4244: 'initializing' : conversion from 'double' to 'const int', possible loss of data
+     1>..\..\Source\DelayProcessor.cpp(49): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>..\..\Source\DelayProcessor.cpp(54): warning C4244: 'argument' : conversion from 'const float' to 'unsigned int', possible loss of data
+     1>..\..\Source\DelayProcessor.cpp(59): warning C4244: 'argument' : conversion from 'const float' to 'unsigned int', possible loss of data
+     1>..\..\Source\DelayProcessor.cpp(61): warning C4244: 'argument' : conversion from 'const float' to 'unsigned int', possible loss of data
+         juce_data_structures.cpp
+         juce_events.cpp
+         juce_graphics.cpp
+         juce_gui_basics.cpp
+         juce_gui_extra.cpp
+         juce_opengl.cpp
+         juce_video.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\rc.exe /D NDEBUG /l"0x0409" /nologo /fo"Release_x32\resources.res" .\resources.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Dimitris\Documents\Juce Projects\Delay\Builds\VisualStudio2013\Release_x32\\Delay_x32.dll" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"Release_x32\\Delay_x32.pdb" /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Dimitris\Documents\Juce Projects\Delay\Builds\VisualStudio2013\Release_x32\Delay_x32.lib" /MACHINE:X86 /SAFESEH /DLL Release_x32\resources.res
+         Release_x32\\DelayProcessor.obj
+         Release_x32\\juce_audio_basics.obj
+         Release_x32\\juce_audio_devices.obj
+         Release_x32\\juce_audio_formats.obj
+         Release_x32\\juce_audio_plugin_client_utils.obj
+         Release_x32\\juce_audio_plugin_client_VST2.obj
+         Release_x32\\juce_audio_processors.obj
+         Release_x32\\juce_core.obj
+         Release_x32\\juce_cryptography.obj
+         Release_x32\\juce_data_structures.obj
+         Release_x32\\juce_events.obj
+         Release_x32\\juce_graphics.obj
+         Release_x32\\juce_gui_basics.obj
+         Release_x32\\juce_gui_extra.obj
+         Release_x32\\juce_opengl.obj
+         Release_x32\\juce_video.obj
+            Creating library C:\Users\Dimitris\Documents\Juce Projects\Delay\Builds\VisualStudio2013\Release_x32\Delay_x32.lib and object C:\Users\Dimitris\Documents\Juce Projects\Delay\Builds\VisualStudio2013\Release_x32\Delay_x32.exp
+         Generating code
+         Finished generating code
+         Delay.vcxproj -> C:\Users\Dimitris\Documents\Juce Projects\Delay\Builds\VisualStudio2013\Release_x32\Delay_x32.dll
+     1>Done Building Project "C:\Users\Dimitris\Documents\Juce Projects\Delay\Builds\VisualStudio2013\Delay.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:32.55
