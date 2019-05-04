@@ -14,9 +14,13 @@
               enableIAA="0" cppLanguageStandard="11">
   <MAINGROUP id="y3R0z4" name="Delay">
     <GROUP id="{37B84333-31B4-527E-3DDF-AC4B913EB328}" name="Source">
-      <FILE id="zzulVA" name="DelayProcessor.cpp" compile="1" resource="0"
-            file="Source/DelayProcessor.cpp"/>
-      <FILE id="iezFy6" name="DelayEditor.h" compile="0" resource="0" file="Source/DelayEditor.h"/>
+      <FILE id="x64EBj" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="oyT842" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="ztvPyw" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="TvoH55" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
