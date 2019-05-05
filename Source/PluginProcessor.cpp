@@ -20,6 +20,7 @@ DelayAudioProcessor::DelayAudioProcessor()
                      #endif
                        )
 #endif
+     : writeIdx(0)
 {
     
 }
@@ -44,7 +45,7 @@ void DelayAudioProcessor::changeProgramName (int index, const String& newName) {
 //==============================================================================
 void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-
+    delayBuffer.setSize(getTotalNumInputChannels(), 2 * (sampleRate + samplesPerBlock));
 }
 
 void DelayAudioProcessor::releaseResources()
@@ -55,36 +56,50 @@ void DelayAudioProcessor::releaseResources()
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool DelayAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
-    ignoreUnused (layouts);
-    return true;
-  #else
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
-    if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
+    if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono() &&
+        layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
         return false;
 
     // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
-   #endif
 
     return true;
-  #endif
 }
 #endif
 
 void DelayAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
-    
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    for (auto i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
+    
+    for (auto channel = 0; channel <= getTotalNumInputChannels(); ++channel)
+    {
+        const int bufferLength = buffer.getNumSamples();
+        const int delayBufferLength = delayBuffer.getNumSamples();
+        const float* bufferData = buffer.getReadPointer(channel);
+        const float* delayBufferData = delayBuffer.getReadPointer(channel);
+        
+        // copy the data from the main buffer to the delay buffer
+        if (delayBufferLength > bufferLength + writeIdx)
+        {
+            delayBuffer.copyFromWithRamp(channel, writeIdx, bufferData, bufferLength, 0.8, 0.8);
+        }
+        else
+        {
+            const int remainingData = delayBufferLength - writeIdx;
+            
+            delayBuffer.copyFromWithRamp(channel, writeIdx, bufferData, remainingData, 0.8, 0.8);
+            delayBuffer.copyFromWithRamp(channel, 0, bufferData, bufferLength - remainingData, 0.8, 0.8);
+        }
+        
+        writeIdx += bufferLength;
+        writeIdx %= delayBufferLength;
+    }
 }
 
 //==============================================================================

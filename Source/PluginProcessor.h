@@ -48,6 +48,8 @@ private:
     // user private methods
     
     // user private variables
+    AudioBuffer<float> delayBuffer;
     
+    int writeIdx;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DelayAudioProcessor)
 };
