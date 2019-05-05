@@ -39,12 +39,12 @@ bool DelayAudioProcessor::isMidiEffect() const { return false; }
 double DelayAudioProcessor::getTailLengthSeconds() const { return 0.0; }
 int DelayAudioProcessor::getNumPrograms() { return 1; }
 int DelayAudioProcessor::getCurrentProgram() { return 0; }
-void DelayAudioProcessor::setCurrentProgram (int index) { }
-const String DelayAudioProcessor::getProgramName (int index) { return {}; }
-void DelayAudioProcessor::changeProgramName (int index, const String& newName) { }
+void DelayAudioProcessor::setCurrentProgram(int index) { }
+const String DelayAudioProcessor::getProgramName(int index) { return {}; }
+void DelayAudioProcessor::changeProgramName(int index, const String& newName) { }
 
 //==============================================================================
-void DelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void DelayAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     if (sampleRate != latestSampleRate)
         latestSampleRate = sampleRate;
@@ -58,7 +58,7 @@ void DelayAudioProcessor::releaseResources()
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool DelayAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool DelayAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
@@ -74,7 +74,7 @@ bool DelayAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) co
 }
 #endif
 
-void DelayAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
+void DelayAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
 
@@ -84,7 +84,7 @@ void DelayAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& 
     const int bufferLength = buffer.getNumSamples();
     const int delayBufferLength = delayBuffer.getNumSamples();
     
-    for (auto channel = 0; channel <= getTotalNumInputChannels(); ++channel)
+    for (auto channel = 0; channel < getTotalNumInputChannels(); ++channel)
     {
         const float* bufferData = buffer.getReadPointer(channel);
         const float* delayBufferData = delayBuffer.getReadPointer(channel);
@@ -126,14 +126,14 @@ void DelayAudioProcessor::getFromDelayBuffer(AudioBuffer<float>& buffer_, const 
         
         if (delayBufferLength_ > bufferLength_ + readPosition)
         {
-            buffer_.addFrom(channel_, 0, delayBufferData_, readPosition, bufferLength_);
+            buffer_.addFrom(channel_, 0, delayBuffer, channel_, readPosition, bufferLength_);
         }
         else
         {
             const int remainingData = delayBufferLength_ - readPosition;
             
-            buffer_.addFrom(channel_, 0, delayBufferData_, readPosition, remainingData);
-            buffer_.addFrom(channel_, remainingData, delayBufferData_, 0, bufferLength_ - remainingData);
+            buffer_.addFrom(channel_, 0, delayBuffer, channel_, readPosition, remainingData);
+            buffer_.addFrom(channel_, remainingData, delayBuffer, channel_, 0, bufferLength_ - remainingData);
         }
     }
 }
@@ -150,14 +150,14 @@ AudioProcessorEditor* DelayAudioProcessor::createEditor()
 }
 
 //==============================================================================
-void DelayAudioProcessor::getStateInformation (MemoryBlock& destData)
+void DelayAudioProcessor::getStateInformation(MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void DelayAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void DelayAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
