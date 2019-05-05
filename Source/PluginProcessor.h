@@ -47,9 +47,19 @@ public:
 private:
     // user private methods
     
+    // copy data from the main buffer to the delay buffer
+    void fillDelayBuffer(const int channel_,
+                         const int bufferLength_, const int delayBufferLength_,
+                         const float* bufferData_, const float* delayBufferData_);
+    
+    void getFromDelayBuffer(AudioBuffer<float>& buffer_, const int channel_,
+                       const int bufferLength_, const int delayBufferLength_,
+                       const float* bufferData_, const float* delayBufferData_);
+    
     // user private variables
     AudioBuffer<float> delayBuffer;
     
-    int writeIdx;
+    int writeIdx, latestSampleRate;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DelayAudioProcessor)
 };
