@@ -8,8 +8,11 @@
 
 #pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
+#include <cmath>
+#include <atomic>
 
-class DelayAudioProcessor  : public AudioProcessor
+class DelayAudioProcessor  : public AudioProcessor,
+                             public AudioProcessorValueTreeState::Listener
 {
 public:
     DelayAudioProcessor();
@@ -19,6 +22,7 @@ public:
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void processBlock(AudioBuffer<float>&, MidiBuffer&) override;
     void releaseResources() override;
+    void parameterChanged(const String &parameterID, float newValue) override;
 
    #ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
@@ -41,25 +45,24 @@ public:
     void setStateInformation(const void* data, int sizeInBytes) override;
 
     // user public methods
+    AudioProcessorValueTreeState& getProcessorState();
     
     // user public variables
     
 private:
     // user private methods
+    void fillDelayBuffer(AudioBuffer<float>& buffer_, const int channel_);
     
-    // copy data from the main buffer to the delay buffer
-    void fillDelayBuffer(const int channel_,
-                         const int bufferLength_, const int delayBufferLength_,
-                         const float* bufferData_, const float* delayBufferData_);
-    
-    void getFromDelayBuffer(AudioBuffer<float>& buffer_, const int channel_,
-                       const int bufferLength_, const int delayBufferLength_,
-                       const float* bufferData_, const float* delayBufferData_);
+    void getFromDelayBuffer(AudioBuffer<float>& buffer_, const int channel_);
     
     // user private variables
+    AudioProcessorValueTreeState delayPluginParameters; /*!< Contains the entire state of the plugin parameters. */
+    
     AudioBuffer<float> delayBuffer;
     
     int writeIdx, latestSampleRate;
+    float latestWetGainValue, latestDelayFeedbackValue;
+    std::atomic<float> wetGainValue, delayTimeValue, delayFeedbackValue;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DelayAudioProcessor)
 };

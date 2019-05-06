@@ -20,10 +20,55 @@ DelayAudioProcessor::DelayAudioProcessor()
                      #endif
                        )
 #endif
-     : writeIdx(0),
-       latestSampleRate(-1)
+     : delayPluginParameters(*this, nullptr),
+       writeIdx(0),
+       latestSampleRate(-1),
+       latestWetGainValue(0.f),
+       latestDelayFeedbackValue(0.f),
+       wetGainValue(1.f),
+       delayTimeValue(200.f),
+       delayFeedbackValue(std::pow(10.f, (-12.f / 20.f)))
 {
+    // Add wet gain parameter
+    delayPluginParameters.createAndAddParameter("wetGain",
+                                                "Wet Gain",
+                                                "dB",
+                                                NormalisableRange<float>(-80.f, 12.f, 1.f), -6.f,
+                                                [](float value) { return String(value, 0); },
+                                                [](const String& text)
+                                                {
+                                                    float valueToConstrain = text.getFloatValue();
+                                                    return jlimit(-80.f, 12.f, valueToConstrain);
+                                                });
     
+    // Add delay time parameter
+    delayPluginParameters.createAndAddParameter("delayTime",
+                                                "Delay Time",
+                                                "msec",
+                                                NormalisableRange<float>(0.f, 1000.f, 1.f), 200.f,
+                                                [](float value) { return String(value, 0); },
+                                                [](const String& text)
+                                                {
+                                                    float valueToConstrain = text.getFloatValue();
+                                                    return jlimit(0.f, 1000.f, valueToConstrain);
+                                                });
+    
+    // Add feedback gain parameter
+    delayPluginParameters.createAndAddParameter("delayFeedback",
+                                                "Delay Feedback",
+                                                "dB",
+                                                NormalisableRange<float>(-80.f, 0.f, 1.f), -12.f,
+                                                [](float value) { return String(value, 0); },
+                                                [](const String& text)
+                                                {
+                                                    float valueToConstrain = text.getFloatValue();
+                                                    return jlimit(-80.f, 0.f, valueToConstrain);
+                                                });
+    
+    delayPluginParameters.state = ValueTree(Identifier("Parameters"));
+    delayPluginParameters.addParameterListener("wetGain", this);
+    delayPluginParameters.addParameterListener("delayTime", this);
+    delayPluginParameters.addParameterListener("delayFeedback", this);
 }
 
 DelayAudioProcessor::~DelayAudioProcessor()
@@ -81,59 +126,60 @@ void DelayAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffer& m
     for (auto i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    const int bufferLength = buffer.getNumSamples();
-    const int delayBufferLength = delayBuffer.getNumSamples();
-    
     for (auto channel = 0; channel < getTotalNumInputChannels(); ++channel)
     {
-        const float* bufferData = buffer.getReadPointer(channel);
-        const float* delayBufferData = delayBuffer.getReadPointer(channel);
-        
-        fillDelayBuffer(channel, bufferLength, delayBufferLength, bufferData, delayBufferData);
-        getFromDelayBuffer(buffer, channel, bufferLength, delayBufferLength, bufferData, delayBufferData);
+        fillDelayBuffer(buffer, channel);
+        getFromDelayBuffer(buffer, channel);
     }
     
-    writeIdx += bufferLength;
-    writeIdx %= delayBufferLength;
+    writeIdx += buffer.getNumSamples();
+    writeIdx %= delayBuffer.getNumSamples();
+    latestWetGainValue = wetGainValue.load();
+    latestDelayFeedbackValue = delayFeedbackValue.load();
 }
 
-void DelayAudioProcessor::fillDelayBuffer(const int channel_,
-                                          const int bufferLength_, const int delayBufferLength_,
-                                          const float* bufferData_, const float* delayBufferData_)
+void DelayAudioProcessor::fillDelayBuffer(AudioBuffer<float>& buffer_, const int channel_)
 {
-    if (delayBufferLength_ > bufferLength_ + writeIdx)
+    if (delayBuffer.getNumSamples() > buffer_.getNumSamples() + writeIdx)
     {
-        delayBuffer.copyFromWithRamp(channel_, writeIdx, bufferData_, bufferLength_, 0.8, 0.8);
+        delayBuffer.copyFromWithRamp(channel_, writeIdx,
+                                     buffer_.getReadPointer(channel_), buffer_.getNumSamples(),
+                                     latestWetGainValue, wetGainValue.load());
     }
     else
     {
-        const int remainingData = delayBufferLength_ - writeIdx;
+        const int remainingData = delayBuffer.getNumSamples() - writeIdx;
+        const float remainingDataGain = latestWetGainValue +
+                                        ((latestWetGainValue - wetGainValue.load()) / buffer_.getNumSamples()) *
+                                        (remainingData / buffer_.getNumSamples());
         
-        delayBuffer.copyFromWithRamp(channel_, writeIdx, bufferData_, remainingData, 0.8, 0.8);
-        delayBuffer.copyFromWithRamp(channel_, 0, bufferData_, bufferLength_ - remainingData, 0.8, 0.8);
+        delayBuffer.copyFromWithRamp(channel_, writeIdx,
+                                     buffer_.getReadPointer(channel_), remainingData,
+                                     latestWetGainValue, remainingDataGain);
+        delayBuffer.copyFromWithRamp(channel_, 0,
+                                     buffer_.getReadPointer(channel_), buffer_.getNumSamples() - remainingData,
+                                     remainingDataGain, wetGainValue.load());
     }
 }
 
-void DelayAudioProcessor::getFromDelayBuffer(AudioBuffer<float>& buffer_, const int channel_,
-                                             const int bufferLength_, const int delayBufferLength_,
-                                             const float* bufferData_, const float* delayBufferData_)
+void DelayAudioProcessor::getFromDelayBuffer(AudioBuffer<float>& buffer_, const int channel_)
 {
     if (latestSampleRate != -1)
     {
-        int delayTime = 500;
+        const int readPosition = static_cast<int>(delayBuffer.getNumSamples() + writeIdx -
+                                                 (latestSampleRate * delayTimeValue.load() / 1000)) %
+                                                 delayBuffer.getNumSamples();
         
-        const int readPosition = static_cast<int>(delayBufferLength_ + writeIdx - (latestSampleRate * delayTime / 1000)) % delayBufferLength_;
-        
-        if (delayBufferLength_ > bufferLength_ + readPosition)
+        if (delayBuffer.getNumSamples() > buffer_.getNumSamples() + readPosition)
         {
-            buffer_.addFrom(channel_, 0, delayBuffer, channel_, readPosition, bufferLength_);
+            buffer_.addFrom(channel_, 0, delayBuffer, channel_, readPosition, buffer_.getNumSamples());
         }
         else
         {
-            const int remainingData = delayBufferLength_ - readPosition;
+            const int remainingData = delayBuffer.getNumSamples() - readPosition;
             
             buffer_.addFrom(channel_, 0, delayBuffer, channel_, readPosition, remainingData);
-            buffer_.addFrom(channel_, remainingData, delayBuffer, channel_, 0, bufferLength_ - remainingData);
+            buffer_.addFrom(channel_, remainingData, delayBuffer, channel_, 0, buffer_.getNumSamples() - remainingData);
         }
     }
 }
@@ -161,6 +207,27 @@ void DelayAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+void DelayAudioProcessor::parameterChanged(const String &parameterID, float newValue)
+{
+    if (parameterID == "wetGain")
+    {
+        wetGainValue.store( std::pow(10.f, (newValue / 20.f)) );
+    }
+    else if (parameterID == "delayTime")
+    {
+        delayTimeValue.store(newValue);
+    }
+    else if (parameterID == "delayFeedback")
+    {
+        delayFeedbackValue.store( std::pow(10.f, (newValue / 20.f)) );
+    }
+}
+
+AudioProcessorValueTreeState& DelayAudioProcessor::getProcessorState()
+{
+    return delayPluginParameters;
 }
 
 //==============================================================================
